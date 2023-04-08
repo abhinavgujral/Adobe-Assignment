@@ -32,9 +32,11 @@ public class UserService {
                 case "bio":
                     user.setBio((String) value);
                     break;
-                // add more cases for other fields to be updated
             }
         });
+
+           if(!fields.containsKey("bio"))
+               user.setBio("");
 
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
@@ -47,4 +49,6 @@ public class UserService {
         optionalUser.orElseThrow(() -> new ResourceNotFoundException("User with Id: "+id+"is not present in database"));
         return optionalUser.get();
     }
+
+
 }
