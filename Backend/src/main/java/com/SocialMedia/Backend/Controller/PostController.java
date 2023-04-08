@@ -86,7 +86,7 @@ public class PostController {
       What is does ? Decrement the like count of a post by id.
       Body of request : need to send the post id as path variable.
     */
-       @PostMapping("/v1/posts/{id}/like")
+       @PostMapping("/v1/posts/{id}/unlike")
        public ResponseEntity<String> decrementLikeOnPost(@PathVariable("id") Integer id){
            //The count
            //    should not go below 0.

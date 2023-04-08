@@ -24,9 +24,12 @@ public class UserController {
        Body of request : need to send the User object.
      */
     @PostMapping("/v1/users")
-    public ResponseEntity<String> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody Map<String, Object> fields) {
 
-        return new ResponseEntity<>("user created Successfully", HttpStatus.CREATED);
+            User savedUser = userService.createUser(fields);
+            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+
+
     }
 
     /*
@@ -39,6 +42,7 @@ public class UserController {
 
     @GetMapping("/v1/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Integer id) {
+        userService.getUserById(id);
 
         return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
     }
