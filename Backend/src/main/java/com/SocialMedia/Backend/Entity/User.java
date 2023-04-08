@@ -21,7 +21,7 @@ public class User {
     @Size(min = 1, max = 50, message = "username length should be between 1 and 50")
     private String name;// (string, 1-50 characters)
     @Email(message = "Email should be of format example@xyz.com")
-    private String email;// (string, valid email format)
+    private final String email;// (string, valid email format)
     @Size(min = 0, max = 200, message = "Bio length should be between 0 and 200")
     private String bio;// (optional string, 0-200 characters)
     private LocalDateTime created_at;// (timestamp, automatically set when the user is created)
