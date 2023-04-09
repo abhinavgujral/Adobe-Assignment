@@ -1,5 +1,6 @@
 package com.SocialMedia.Backend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -7,13 +8,16 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
-
+@Validated
 public class User {
 
     @Id
@@ -31,6 +35,11 @@ public class User {
     private String bio;// (optional string, 0-200 characters)
     private LocalDateTime createdAt;// (timestamp, automatically set when the user is created)
     private LocalDateTime updatedAt;// (timestamp, automatically updated when the user is updated)
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Post> posts = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

@@ -1,6 +1,7 @@
 package com.SocialMedia.Backend.Controller;
 
 import com.SocialMedia.Backend.Entity.User;
+import com.SocialMedia.Backend.Repository.UserRepository;
 import com.SocialMedia.Backend.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     /*
        Request type: POST
@@ -26,10 +29,8 @@ public class UserController {
     @PostMapping("/v1/users")
     public ResponseEntity<User> createUser(@Valid @RequestBody Map<String, Object> fields) {
 
-            User savedUser = userService.createUser(fields);
-            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-
-
+        User savedUser = userService.createUser(fields);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     /*
@@ -42,9 +43,8 @@ public class UserController {
 
     @GetMapping("/v1/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Integer id) {
-        userService.getUserById(id);
-
-        return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+        User fetchedUser = userService.getUserById(id);
+        return new ResponseEntity<>(fetchedUser, HttpStatus.ACCEPTED);
     }
 
     /*
@@ -54,9 +54,9 @@ public class UserController {
       Body of request : need to send the User id as path variable and Send fields you want to update
     */
     @PatchMapping("/v1/users/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
-
-        return new ResponseEntity<>("Updated Successfully", HttpStatus.OK);
+    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody Map<String, Object> fields) {
+        User updatedUser = userService.updateUser(id, fields);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
 
     }
 
@@ -68,9 +68,9 @@ public class UserController {
     */
 
     @DeleteMapping("/v1/users/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-
-        return new ResponseEntity<>("Updated Successfully", HttpStatus.OK);
+    public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
+        String status = userService.deleteUser(id);
+        return new ResponseEntity<>(status, HttpStatus.OK);
 
     }
 
@@ -81,8 +81,9 @@ public class UserController {
      Body of request : NONE.
    */
     @GetMapping("/v1/analytics/users")
-    public ResponseEntity<List<User>> getUserTotal() {
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    public ResponseEntity<Integer> getUserTotal() {
+          Integer totalUser= userService.getCountUser();
+        return new ResponseEntity<>(totalUser, HttpStatus.OK);
     }
 
     /*
@@ -93,7 +94,8 @@ public class UserController {
    */
     @GetMapping("/v1/analytics/users/top-active")
     public ResponseEntity<List<User>> topFiveUser() {
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        List<User> topActiveUser=userService.getTopActiveUser();
+        return new ResponseEntity<>(topActiveUser, HttpStatus.OK);
     }
 
 

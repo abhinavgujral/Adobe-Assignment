@@ -2,7 +2,10 @@ package com.SocialMedia.Backend.Controller;
 
 import com.SocialMedia.Backend.Entity.Post;
 import com.SocialMedia.Backend.Entity.User;
+import com.SocialMedia.Backend.Repository.PostRepository;
+import com.SocialMedia.Backend.Service.PostService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,30 +16,34 @@ import java.util.Map;
 @RestController
 public class PostController {
 
+    @Autowired
+    PostService postService;
+
+
     /*
      Request type: POST
-     URI: /v1/Users
-     What is does? : Create or Persist a new user.
-     Body of request : need to send the User object.
+     URI: /v1/posts
+     What is does? : Create or Persist a new post.
+     Body of request : need to send the post fields .
    */
     @PostMapping("/v1/posts")
-    public ResponseEntity<String> createUser(@Valid @RequestBody User user){
-
+    public ResponseEntity<String> createPost(@Valid @RequestBody Map<String,Object> fields){
+              postService.createPost(fields);
         return new ResponseEntity<>("user created Successfully", HttpStatus.CREATED);
     }
 
     /*
       Request type: GET
-      URI: /v1/users/{id}
+      URI: /v1/posts/{id}
       What is does?  Retrieve a post by id.
       Body of request : need to send the Post id as path variable.
     */
 
 
     @GetMapping("/v1/posts/{id}")
-    public ResponseEntity<Post> getUserById(@PathVariable("id") Integer id){
-
-        return new ResponseEntity<>(new Post(),HttpStatus.ACCEPTED );
+    public ResponseEntity<Post> getPostById(@PathVariable("id") Integer id){
+          Post fetchedPost = postService.getPostById(id);
+        return new ResponseEntity<>(fetchedPost,HttpStatus.ACCEPTED );
     }
     /*
           Request type: PATCH
@@ -45,9 +52,9 @@ public class PostController {
           Body of request : need to send the post id as path variable and Send the content field you want to update as a body
         */
     @PatchMapping("/v1/posts/{id}")
-    public ResponseEntity<String> updateUser( @PathVariable Long id, @RequestBody Map<String, Object> fields){
-
-        return new ResponseEntity<>("Updated Successfully",HttpStatus.OK);
+    public ResponseEntity<Post> updateUser( @PathVariable Integer id, @RequestBody Map<String, Object> fields){
+                        Post updatedPost=postService.updatePost(id,fields);
+        return new ResponseEntity<>(updatedPost,HttpStatus.OK);
 
     }
 
@@ -59,11 +66,10 @@ public class PostController {
     */
 
     @DeleteMapping("/v1/posts/{id}")
-    public ResponseEntity<String> deleteUser( @PathVariable Long id)
+    public ResponseEntity<String> deletePost( @PathVariable Integer id)
     {
-
-        return new ResponseEntity<>("Updated Successfully",HttpStatus.OK);
-
+        String status = postService.deletePostById(id);
+        return new ResponseEntity<>(status, HttpStatus.OK);
     }
 
          /*
