@@ -66,6 +66,8 @@ public class UserService {
                     existingUser.setName((String) value);
                     break;
                 case "email":
+                     if(userRepository.findByEmail((String)value).isPresent())
+                         throw new ResourceAlreadyExistException("User with this email already exist try different one");
                     existingUser.setEmail((String) value);
                     break;
                 case "bio":
@@ -80,12 +82,9 @@ public class UserService {
 
 
     public String deleteUser(Integer id) {
-        try {
+        if (!userRepository.findById(id).isEmpty())
+            throw new ResourceNotFoundException("user with id: "+id+" is not present");
             userRepository.deleteById(id);
-        }
-        catch (Exception e){
-            throw new ResourceNotFoundException("user with id is not present");
-        }
         return "User deleted successfully";
     }
 
@@ -97,9 +96,20 @@ public class UserService {
     public List<User> getTopActiveUser() {
         List<User> userList=userRepository.findAll();
         userList.sort((o1,o2)-> o1.getPosts().size() - o2.getPosts().size());
+        if(userList.size()<5)
+            throw new ResourceNotFoundException("There are less than 5 users");
         List<User> topFive= new ArrayList<>(5);
-        for(int i =0;i<5;i++)
-            topFive.add(userList.get(i));
+        int numberOfUserPosted=0;
+        for (User user:userList) {
+           if( user.getPosts().size()>0 && numberOfUserPosted<5)
+           {
+               topFive.add(user);
+               numberOfUserPosted++;
+           }
+        }
+        if(numberOfUserPosted<5)
+            throw new ResourceNotFoundException(" there are less than 5 users who have posted ");
+
         return topFive;
     }
 }

@@ -1,8 +1,7 @@
 package com.SocialMedia.Backend.Controller;
 
 import com.SocialMedia.Backend.Entity.Post;
-import com.SocialMedia.Backend.Entity.User;
-import com.SocialMedia.Backend.Repository.PostRepository;
+
 import com.SocialMedia.Backend.Service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +79,7 @@ public class PostController {
       Body of request : need to send the post id as path variable.
     */
 
-    @PostMapping("/v1/posts/{id}/like")
+    @PatchMapping("/v1/posts/{id}/like")
     public ResponseEntity<Post> incrementLikeOnPost(@PathVariable("id") Integer id){
         Post likedPost= postService.incrementLikedPost(id);
         return new ResponseEntity<>(likedPost,HttpStatus.ACCEPTED);
@@ -93,7 +92,7 @@ public class PostController {
       What is does ? Decrement the like count of a post by id.
       Body of request : need to send the post id as path variable.
     */
-       @PostMapping("/v1/posts/{id}/unlike")
+       @PatchMapping("/v1/posts/{id}/unlike")
        public ResponseEntity<Post> decrementLikeOnPost(@PathVariable("id") Integer id){
            //The count
            //    should not go below 0.
@@ -108,10 +107,10 @@ public class PostController {
       Body of request : NONE
     */
     @GetMapping("/v1/analytics/posts")
-    public ResponseEntity<List<Post>> getPostAnalytics()
+    public ResponseEntity<Integer> getPostAnalytics()
     {
-        List<Post> postList = postService.getAllPost();
-        return new ResponseEntity<>(postList,HttpStatus.OK);
+        Integer numberOfPost = postService.getAllPost();
+        return new ResponseEntity<>(numberOfPost,HttpStatus.OK);
     }
 /*
       Request type: GET

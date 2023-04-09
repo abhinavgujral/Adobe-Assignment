@@ -30,6 +30,7 @@ public class Post {
     @NotNull
     private Integer likes; // (integer, non-negative)
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean likestatus;
     @PrePersist
     protected void onCreate() {

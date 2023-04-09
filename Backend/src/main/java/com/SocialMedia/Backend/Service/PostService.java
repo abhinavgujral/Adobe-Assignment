@@ -70,6 +70,7 @@ public class PostService {
 
     public Post incrementLikedPost(Integer id) {
         Post fetchedPost= postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("post not found"));
+       System.out.println(fetchedPost.toString());
         Post likedPost=fetchedPost.incrementLike();
         return   postRepository.save(likedPost);
 
@@ -81,14 +82,14 @@ public class PostService {
         return   postRepository.save(unlikedPost);
     }
 
-    public List<Post> getAllPost() {
+    public Integer getAllPost() {
         List<Post> allPostList= postRepository.findAll();
-        return  allPostList;
+        return  allPostList.size();
     }
 
     public List<Post> getTopPost() {
 
-        List<Post> sortedPostList=getAllPost().stream().sorted((o1, o2)->o2.getLikes().compareTo(o1.getLikes())).collect(Collectors.toList());
+        List<Post> sortedPostList=postRepository.findAll().stream().sorted((o1, o2)->o2.getLikes().compareTo(o1.getLikes())).collect(Collectors.toList());
         List<Post> topFivePost = new ArrayList<>(5);
         for(int i=0;i<5;i++)
             topFivePost.add(sortedPostList.get(i));
