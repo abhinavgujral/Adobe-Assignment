@@ -35,14 +35,23 @@ public class ExceptionalHandler {
 
 		return new ResponseEntity<CustomErrorDetails>(errorDetail, HttpStatus.METHOD_NOT_ALLOWED);
 	}
+	@ExceptionHandler(NotAllowedException.class)
+	public ResponseEntity<CustomErrorDetails> validationExceptionHandler(
+			NotAllowedException notAllowedException, WebRequest webRequest) {
 
+		CustomErrorDetails err = new CustomErrorDetails(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Validation Error",
+				notAllowedException.getMessage());
+
+		return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+
+	}
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<CustomErrorDetails> resourceNotFoundException(ResourceNotFoundException resourceNotFoundException,
 																		WebRequest webRequest) {
 
-		CustomErrorDetails CustomErrorDetails = new CustomErrorDetails(LocalDateTime.now(), HttpStatus.CONFLICT.value(),
+		CustomErrorDetails customErrorDetails = new CustomErrorDetails(LocalDateTime.now(), HttpStatus.CONFLICT.value(),
 				"resource Not Found",resourceNotFoundException.getMessage());
-		return new ResponseEntity<CustomErrorDetails>(CustomErrorDetails, HttpStatus.CONFLICT);
+		return new ResponseEntity<CustomErrorDetails>(customErrorDetails, HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)

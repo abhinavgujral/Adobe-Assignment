@@ -98,7 +98,7 @@ public class UserService {
         userList.sort((o1,o2)-> o1.getPosts().size() - o2.getPosts().size());
         if(userList.size()<5)
             throw new ResourceNotFoundException("There are less than 5 users");
-        List<User> topFive= new ArrayList<>(5);
+        List<User> topFive= new ArrayList<>();
         int numberOfUserPosted=0;
         for (User user:userList) {
            if( user.getPosts().size()>0 && numberOfUserPosted<5)
@@ -107,8 +107,6 @@ public class UserService {
                numberOfUserPosted++;
            }
         }
-        if(numberOfUserPosted<5)
-            throw new ResourceNotFoundException(" there are less than 5 users who have posted ");
 
         return topFive;
     }

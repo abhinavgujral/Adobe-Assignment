@@ -42,22 +42,6 @@ public class Post {
         updated_at = LocalDateTime.now();
     }
 
-    public Post incrementLike() {
-      //  if(this.likestatus)
-           // return this;
-      //  this.likestatus=true;
-        this.setLikes(this.getLikes()+1);
-        return this;
-    }
 
-    public Post decrementLike() {
 
-      //  if(this.likestatus)
-        {
-            this.setLikes(this.getLikes()>0?this.getLikes()-1:0);
-      //      this.likestatus=false;
-        }
-        return this;
-
-    }
 }

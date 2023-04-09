@@ -52,7 +52,7 @@ public class PostController {
           Body of request : need to send the post id as path variable and Send the content field you want to update as a body
         */
     @PatchMapping("/v1/posts/{id}")
-    public ResponseEntity<Post> updateUser( @PathVariable Integer id, @RequestBody Map<String, Object> fields){
+    public ResponseEntity<Post> updatePost( @PathVariable Integer id, @RequestBody Map<String, Object> fields){
                         Post updatedPost=postService.updatePost(id,fields);
         return new ResponseEntity<>(updatedPost,HttpStatus.OK);
 
