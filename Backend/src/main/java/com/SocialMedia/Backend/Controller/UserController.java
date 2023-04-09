@@ -17,8 +17,7 @@ public class UserController {
 
     @Autowired
     UserService userService;
-    @Autowired
-    private UserRepository userRepository;
+
 
     /*
        Request type: POST

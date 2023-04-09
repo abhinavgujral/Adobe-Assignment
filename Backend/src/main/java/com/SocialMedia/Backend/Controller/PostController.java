@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,10 +81,10 @@ public class PostController {
     */
 
     @PostMapping("/v1/posts/{id}/like")
-    public ResponseEntity<String> incrementLikeOnPost(@PathVariable("id") Integer id){
-        return new ResponseEntity<>("Liked",HttpStatus.ACCEPTED);
+    public ResponseEntity<Post> incrementLikeOnPost(@PathVariable("id") Integer id){
+        Post likedPost= postService.incrementLikedPost(id);
+        return new ResponseEntity<>(likedPost,HttpStatus.ACCEPTED);
     }
-
 
 
        /*
@@ -93,10 +94,11 @@ public class PostController {
       Body of request : need to send the post id as path variable.
     */
        @PostMapping("/v1/posts/{id}/unlike")
-       public ResponseEntity<String> decrementLikeOnPost(@PathVariable("id") Integer id){
+       public ResponseEntity<Post> decrementLikeOnPost(@PathVariable("id") Integer id){
            //The count
            //    should not go below 0.
-           return new ResponseEntity<>("Liked",HttpStatus.ACCEPTED);
+           Post unlikedPost= postService.decrementLikedPost(id);
+           return new ResponseEntity<>(unlikedPost,HttpStatus.ACCEPTED);
        }
 
       /*
@@ -108,7 +110,8 @@ public class PostController {
     @GetMapping("/v1/analytics/posts")
     public ResponseEntity<List<Post>> getPostAnalytics()
     {
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<Post> postList = postService.getAllPost();
+        return new ResponseEntity<>(postList,HttpStatus.OK);
     }
 /*
       Request type: GET
@@ -119,8 +122,8 @@ public class PostController {
 
     @GetMapping("/v1/analytics/posts/top-liked")
     public ResponseEntity<List<Post>> getTopPosts(){
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<Post> topPostList = postService.getTopPost();
+        return new ResponseEntity<>(topPostList,HttpStatus.OK);
     }
 
 

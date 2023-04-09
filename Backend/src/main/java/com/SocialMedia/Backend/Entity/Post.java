@@ -30,6 +30,7 @@ public class Post {
     @NotNull
     private Integer likes; // (integer, non-negative)
 
+    private Boolean likestatus;
     @PrePersist
     protected void onCreate() {
         created_at = LocalDateTime.now();
@@ -39,5 +40,24 @@ public class Post {
     @PreUpdate
     protected void onUpdate() {
         updated_at = LocalDateTime.now();
+    }
+
+    public Post incrementLike() {
+        if(this.likestatus)
+            return this;
+        this.likestatus=true;
+        this.setLikes(this.getLikes()+1);
+        return this;
+    }
+
+    public Post decrementLike() {
+
+        if(this.likestatus)
+        {
+            this.setLikes(this.getLikes()>0?this.getLikes()-1:0);
+            this.likestatus=false;
+        }
+        return this;
+
     }
 }

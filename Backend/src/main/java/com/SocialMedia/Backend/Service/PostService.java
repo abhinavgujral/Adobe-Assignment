@@ -8,7 +8,10 @@ import com.SocialMedia.Backend.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -65,4 +68,30 @@ public class PostService {
     }
 
 
+    public Post incrementLikedPost(Integer id) {
+        Post fetchedPost= postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("post not found"));
+        Post likedPost=fetchedPost.incrementLike();
+        return   postRepository.save(likedPost);
+
+    }
+
+    public Post decrementLikedPost(Integer id) {
+        Post fetchedPost= postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("post not found"));
+        Post unlikedPost=fetchedPost.decrementLike();
+        return   postRepository.save(unlikedPost);
+    }
+
+    public List<Post> getAllPost() {
+        List<Post> allPostList= postRepository.findAll();
+        return  allPostList;
+    }
+
+    public List<Post> getTopPost() {
+
+        List<Post> sortedPostList=getAllPost().stream().sorted((o1, o2)->o2.getLikes().compareTo(o1.getLikes())).collect(Collectors.toList());
+        List<Post> topFivePost = new ArrayList<>(5);
+        for(int i=0;i<5;i++)
+            topFivePost.add(sortedPostList.get(i));
+        return topFivePost;
+    }
 }
