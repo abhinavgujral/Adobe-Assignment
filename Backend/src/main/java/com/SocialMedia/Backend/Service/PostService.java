@@ -25,6 +25,8 @@ public class PostService {
         fields.forEach((key, value) -> {
             switch (key) {
                 case "content":
+                    if(! (value instanceof String))
+                        throw new IllegalArgumentException("User id must be an String");
                   post.setContent((String) value);
                     break;
 
@@ -41,6 +43,7 @@ public class PostService {
         });
 
         post.setLikes(0);
+     //  post.setLikestatus(false);
 
         return postRepository.save(post);
     }

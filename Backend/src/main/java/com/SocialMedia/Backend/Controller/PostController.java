@@ -27,9 +27,9 @@ public class PostController {
      Body of request : need to send the post fields .
    */
     @PostMapping("/v1/posts")
-    public ResponseEntity<String> createPost(@Valid @RequestBody Map<String,Object> fields){
-              postService.createPost(fields);
-        return new ResponseEntity<>("user created Successfully", HttpStatus.CREATED);
+    public ResponseEntity<Post> createPost(@Valid @RequestBody Map<String,Object> fields){
+              Post createdPost=postService.createPost(fields);
+        return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
 
     /*
