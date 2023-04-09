@@ -103,7 +103,7 @@ public class PostService {
         List<Post> sortedPostList=postRepository.findAll().stream().sorted((o1, o2)->o2.getLikes().compareTo(o1.getLikes())).collect(Collectors.toList());
         List<Post> topFivePost = new ArrayList<>(5);
         if(sortedPostList.size()<5)
-            throw new ResourceNotFoundException("There are less than 5 users");
+            throw new ResourceNotFoundException("There are less than 5 Posts");
         for(int i=0;i<5;i++)
             topFivePost.add(sortedPostList.get(i));
         return topFivePost;
