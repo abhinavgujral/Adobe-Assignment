@@ -14,10 +14,15 @@ This is a Social Media application dashboard, consisting of a backend API and a 
 
 • PostAnalytics: A page displaying post analytics, such as the total number of posts and the top 5 most liked posts.
 
+## Have a Look at API Documentation
+
+https://documenter.getpostman.com/view/17425989/2s93XsZ6cp
 
 ## How to Test Backend API's
 
-Open Swagger Link :-
+Open Deployed Swagger Link :-
 
 https://adobe-assignment-production-34ca.up.railway.app/swagger-ui/index.html 
+
+
 
